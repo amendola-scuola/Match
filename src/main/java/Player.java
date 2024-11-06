@@ -3,12 +3,14 @@ public class Player implements Runnable {
     private final String name;
     private int passesMade;
     private final Ball ball;
+    private final int totalPlayers;
 
-    public Player(int id, String name, Ball ball) {
+    public Player(int id, String name, Ball ball, int totalPlayers) {
         this.id = id;
         this.name = name;
         this.passesMade = 0;
         this.ball = ball;
+        this.totalPlayers = totalPlayers;
     }
 
     @Override
@@ -17,12 +19,12 @@ public class Player implements Runnable {
         System.out.println("Dati giocatore: ID: " + id + ", Nome: " + name +
                 ", Priority: " + currentThread.getPriority());
 
-        // Simula i passaggi
+        // Simula i passaggi finché il gioco non termina
         while (!ball.isGameEnded()) {
             ball.pass(id);
             passesMade++;
-            System.out.println("giocatore " + id + " (Thread ID: " + currentThread.getId() +
-                    ") passaggi fatti: " + passesMade);
+            System.out.println("Giocatore " + id + " (" + name + ", Thread ID: " + currentThread.getId()
+                    + ") ha fatto " + passesMade + " passaggi.");
 
             // Simula il passaggio
             Thread.yield();
@@ -34,10 +36,18 @@ public class Player implements Runnable {
             }
         }
 
-        if (ball.getWinnerId() == id) {
-            System.out.println("Il giocatore " + id + " vince la partita!");
-        } else {
-            System.out.println("Il giocatore " + id + " perde la partita.");
-        }
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPassesMade() {
+        return passesMade;
+    }
+
 }
