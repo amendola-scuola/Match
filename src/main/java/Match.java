@@ -1,3 +1,7 @@
+/**
+* @author Francesco
+* @see Scheda esercitazione
+*/
 public class Match {
     public static void main(String[] args) {
         Ball ball = new Ball(1); // Il giocatore 1 inizia con la palla
