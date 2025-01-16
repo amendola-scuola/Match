@@ -15,6 +15,9 @@ public class Match {
 
         Referee referee = new Referee(ball, players);
 
+        // Legge e stampa a video l'ultima classifica se presente
+        referee.readLastRanking();
+
         List<Thread> playerThreads = new ArrayList<>();
 
         // Creazione dei thread per i giocatori

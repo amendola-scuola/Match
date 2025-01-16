@@ -1,11 +1,11 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 
 public class Referee implements Runnable {
     private final Ball ball;
     private final List<Player> players;
+    private final String fileName = "classifica.txt";
 
     public Referee(Ball ball, List<Player> players) {
         this.ball = ball;
@@ -33,14 +33,43 @@ public class Referee implements Runnable {
             }
         });
 
-        System.out.println("\nClassifica dei palleggi:");
+        // Legge e stampa l'ultima classifica
+        readLastRanking();
+
+        // Stampa la classifica dei palleggi corrente
+        System.out.println("\nNuova Classifica dei passaggi:");
         for (Player player : players) {
             System.out.println("Giocatore " + player.getName() + ": " + player.getPassesMade() + " passaggi");
         }
 
         // Salva la classifica in un file
-        try (FileWriter writer = new FileWriter("classifica.txt")) {
-            writer.write("Classifica dei palleggi:\n");
+        saveCurrentRanking();
+
+    }
+
+    // Metodo per leggere e stampare a video l'ultima classifica salvata
+    synchronized void readLastRanking() {
+        File file = new File(fileName);
+        if (!file.exists()) {
+            System.out.println("Nessuna classifica precedente trovata.");
+            return;
+        }
+        System.out.println("\nUltima classifica salvata:");
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            System.out.println("Fine della classifica precedente.\n");
+        } catch (IOException e) {
+            System.err.println("Errore durante la lettura della classifica: " + e.getMessage());
+        }
+    }
+
+    // Metodo per salvare la classifica corrente
+    private synchronized void saveCurrentRanking() {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write("Classifica dei passaggi:\n");
             for (Player player : players) {
                 writer.write("Giocatore " + player.getName() + ": " + player.getPassesMade() + " passaggi\n");
             }
