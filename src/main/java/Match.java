@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* @author Francesco
+* @see Scheda esercitazione
+*/
 public class Match {
     public static void main(String[] args) {
         int totalPlayers = 4;
